@@ -1,0 +1,44 @@
+2a. How many orders were shipped by Speedy Express in total? 
+Answer: 54
+Query:
+SELECT Shippers.ShipperName, Shippers.ShipperID FROM [Shippers]
+INNER JOIN [Orders] ON Orders.ShipperID = Shippers.ShipperID
+WHERE ShipperName='Speedy Express';
+
+the above query should pull up 54 records
+
+2b. What is the last name of the employee with the most orders?
+Answer: Peacock
+Query:
+I had to do 2 queries for this:
+Query 1 - count the orders:
+SELECT EmployeeID, Count(Orders.OrderID) AS TotalOrders
+FROM [Orders]
+Where EmployeeID = EmployeeID 
+GROUP BY EmployeeID
+Order BY Count(Orders.OrderID) DESC;
+
+the top result was 40 orders, EmployeeID 4
+
+Query 2 - identify the employee
+SELECT *
+FROM Employees
+where Employees.EmployeeID = 4
+
+The last name was Peacock
+
+2c. What product was ordered the most by customers in Germany?
+Answer: Boston Crab Meat
+Query:
+SELECT SUM(Quantity),OrderDetails.ProductID
+FROM OrderDetails
+JOIN Products on Products.ProductID=OrderDetails.ProductID
+JOIN Customers on Customers.CustomerID=Orders.CustomerID
+JOIN Orders on Orders.OrderID=OrderDetails.OrderID
+WHERE Customers.Country='Germany'
+GROUP BY Products.ProductID
+ORDER BY SUM(Quantity) DESC
+
+get product ID of 40
+
+SELECT ProductName FROM [Products] where ProductID=40
